@@ -3,16 +3,16 @@ package com.google.service;
 import java.util.Vector;
 
 public class Consumer implements Runnable {
-    private final Vector sharedqueue;
+    private final Vector SHAREDQUEUE;
 
     public Consumer(Vector sharedqueue) {
-        this.sharedqueue = sharedqueue;
+        this.SHAREDQUEUE = sharedqueue;
     }
 
     @Override
     public void run() {
         while (true) {
-            System.out.println("consumed : " + consume() + ", sharedqueue's size is : " + sharedqueue.size());
+            System.out.println("consumed : " + consume() + ", sharedqueue's size is : " + SHAREDQUEUE.size());
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -22,19 +22,19 @@ public class Consumer implements Runnable {
     }
 
     private int consume() {
-        while (sharedqueue.isEmpty()) {
-            synchronized (sharedqueue) {
+        while (SHAREDQUEUE.isEmpty()) {
+            synchronized (SHAREDQUEUE) {
                 System.out.println("consumer sharedqueue is empty");
                 try {
-                    sharedqueue.wait();
+                    SHAREDQUEUE.wait();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
         }
-        synchronized (sharedqueue) {
-            sharedqueue.notify();
-            return (Integer) sharedqueue.remove(0);
+        synchronized (SHAREDQUEUE) {
+            SHAREDQUEUE.notify();
+            return (Integer) SHAREDQUEUE.remove(0);
         }
     }
 }
