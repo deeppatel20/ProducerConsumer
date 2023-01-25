@@ -3,11 +3,11 @@ package com.google.service;
 import java.util.Vector;
 
 public class Producer implements Runnable {
-    private final Vector SHAREDQUEUE;
+    private final Vector sharedQueue;
     private final int SIZE;
 
-    public Producer(Vector sharedqueue, int size) {
-        this.SHAREDQUEUE = sharedqueue;
+    public Producer(Vector sharedQueue, int size) {
+        this.sharedQueue = sharedQueue;
         this.SIZE = size;
     }
 
@@ -26,20 +26,20 @@ public class Producer implements Runnable {
     }
 
     private void produce(int i) {
-        while (SHAREDQUEUE.size() == SIZE) {
-            synchronized (SHAREDQUEUE) {
+        while (sharedQueue.size() == SIZE) {
+            synchronized (sharedQueue) {
                 System.out.println("producer sharedqueue is full");
                 try {
-                    SHAREDQUEUE.wait();
+                    sharedQueue.wait();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
         }
-        synchronized (SHAREDQUEUE) {
-            SHAREDQUEUE.add(i);
-            System.out.println("produced : " + i + ", sharedqueue's size is : " + SHAREDQUEUE.size());
-            SHAREDQUEUE.notify();
+        synchronized (sharedQueue) {
+            sharedQueue.add(i);
+            System.out.println("produced : " + i + ", sharedqueue's size is : " + sharedQueue.size());
+            sharedQueue.notify();
         }
     }
 }

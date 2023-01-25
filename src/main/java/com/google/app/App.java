@@ -8,9 +8,9 @@ import java.util.Vector;
 public class App {
     public static void main(String[] args) {
         System.out.println("Producer Consumer project");
-        Vector sharedqueue = new Vector();
-        Producer producer = new Producer(sharedqueue, 10);
-        Consumer consumer = new Consumer(sharedqueue);
+        Vector sharedQueue = new Vector();
+        Producer producer = new Producer(sharedQueue, 10);
+        Consumer consumer = new Consumer(sharedQueue);
         Thread t1 = new Thread(producer, "Producer");
         Thread t2 = new Thread(consumer, "Consumer");
         t1.start();
